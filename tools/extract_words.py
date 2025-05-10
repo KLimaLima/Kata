@@ -2,13 +2,14 @@ import MeCab
 
 wakati = MeCab.Tagger("-Owakati")
 
-sentence = "もらいながら聞いてもらえたらと思います それでは早速1つ目pyonの環境準備に"
+sentence = "もう少し選択肢が広がるかと思います"
+sentence2 = "私も"
 
 list_words01 = wakati.parse(sentence).split()
 
 tagger = MeCab.Tagger()
 
-list_words02 = tagger.parse(sentence)
+# list_words02 = tagger.parse(sentence).split()
 
 print(list_words01)
-print(list_words02)
+# print(list_words02)

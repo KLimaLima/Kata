@@ -1,6 +1,7 @@
 # Ignore user files
 out/
 res/
+dict/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
