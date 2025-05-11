@@ -1,28 +1,39 @@
 import json
 import time
 
-def json2_print(data: dict):
+class JPN_Dictionary:
 
-    print(json.dumps(data, indent=4,  ensure_ascii=False))
-
-def find_by_word(find_me):
-
-    with open("dict/jmdict-eng-3.6.1.json", encoding="utf-8") as file:
-        data = json.load(file)
-
-    words = data["words"]
-
-    for word in words:
-
-        for var in word["kanji"]:
-
-            if find_me == var["text"]:
-                # print(var["text"])
-                # print(word["id"])
-
-                return word
+    loaded_dict = False
     
-    return None
+    version = None
+    words = None
+    
+    def __init__(self, dict_file):
+
+        if self.loaded_dict:
+            return
+        # TODO: what if wants to use another dict file
+            
+        with open(dict_file, encoding="utf-8") as file:
+            data = json.load(file)
+        
+        self.loaded_dict = True
+
+        self.version = data["version"]
+
+        self.words = data["words"]
+        
+    def find_by_word(self, find_me):
+
+        for word in self.words:
+
+            for var in word["kanji"]:
+
+                if find_me == var["text"]:
+
+                    return word
+        
+        return None
 
 def find_by_id(id):
 
@@ -36,6 +47,11 @@ def find_by_id(id):
         if word["id"] == id:
             return word
     return None
+
+def json2_print(data: dict):
+
+    print(json.dumps(data, indent=4,  ensure_ascii=False))
+
 
 if __name__ == "__main__":
 
