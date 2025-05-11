@@ -2,11 +2,15 @@ import srt
 
 def extract_srt(file_path, out_path='out/', out_name=None):
 
+    if not out_name:    
+        out_name = file_path.split('/')
+        out_name = out_name[-1]
+
     with open(f'res/{file_path}', 'r', encoding= 'utf-8') as rf:
 
         subs = srt.parse(rf)
 
-        with open(f'out/subs_of_{file_path}.txt', 'w', encoding='utf-8') as wf:
+        with open(f'{out_path}{out_name}.txt', 'w', encoding='utf-8') as wf:
             
             for sub in subs:
 

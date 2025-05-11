@@ -1,6 +1,9 @@
+# REASON OF DEPRECATION
+# - using nagisa which is slow
+# - in favor of using MeCab (the more offical-ish jpn tokenizer and much faster)
+
 import nagisa
 
-#TODO: change from nagisa to use MeCab
 def extract_sentence(file_path):
     """Extracts the words inside of a sentence
 
