@@ -1,15 +1,25 @@
 import MeCab
 
-wakati = MeCab.Tagger("-Owakati")
+def tokenize_jpn(text):
 
-sentence = "もう少し選択肢が広がるかと思います"
-sentence2 = "私も"
+    wakati = MeCab.Tagger("-Owakati")
 
-list_words01 = wakati.parse(sentence).split()
+    list_words = wakati.parse(text).split()
 
-tagger = MeCab.Tagger()
+    return list_words
 
-# list_words02 = tagger.parse(sentence).split()
+if __name__ == "__main__":
 
-print(list_words01)
-# print(list_words02)
+    wakati = MeCab.Tagger("-Owakati")
+
+    sentence2 = "もう少し選択肢が広がるかと思います"
+    sentence = "先生とお弁当のおかずを 交換していた ひとりぼっちな子"
+
+    list_words01 = wakati.parse(sentence).split()
+
+    tagger = MeCab.Tagger()
+
+    # list_words02 = tagger.parse(sentence).split()
+
+    print(list_words01)
+    # print(list_words02)
