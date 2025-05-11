@@ -1,14 +1,29 @@
 import json
-import time
 
+# OBJECTIVES
+# 1. Get meaning and definitions for itself only
+# 2. Include other common words
 class JPN_Dictionary:
 
     loaded_dict = False
     
     version = None
-    words = None
+    _words = None
     
     def __init__(self, dict_file):
+
+        # word_dict: the dictionary of the word
+        self.word_dict = None
+        # kanji: the  kanji
+        self.kanji = None
+        # is the kanji common
+        # kana
+        self.kana = None
+        # is the kana common
+        # applies to which kanji
+        # data about its definition
+        self.gloss = None
+        self.sense = None
 
         if self.loaded_dict:
             return
@@ -21,19 +36,39 @@ class JPN_Dictionary:
 
         self.version = data["version"]
 
-        self.words = data["words"]
+        self._words = data["words"]
+
+    def __str__(self):
+
+        print_me = ''
+
+        for key, value in vars(self).items():
+            if key[0] == '_':
+                continue
+
+            print_me += f'{key}: {value}\n\n'
+
+        return print_me
         
     def find_by_word(self, find_me):
 
-        for word in self.words:
+        for word in self._words:
 
             for var in word["kanji"]:
 
                 if find_me == var["text"]:
 
-                    return word
+                    self.word_dict = word
+
+                    return True
         
-        return None
+        return False
+    
+    def populate_definitions(self):
+
+        self.kanji = self.word_dict["kanji"]
+        self.kana = self.word_dict["kana"]
+        self.sense = self.word_dict["sense"]
 
 def find_by_id(id):
 
@@ -55,12 +90,19 @@ def json2_print(data: dict):
 
 if __name__ == "__main__":
 
-    with open("dict/jmdict-eng-3.6.1.json", encoding="utf-8") as file:
-        data = json.load(file)
+    test = JPN_Dictionary("dict/jmdict-eng-3.6.1.json")
 
-    print(data["version"])
+    # with open("dict/jmdict-eng-3.6.1.json", encoding="utf-8") as file:
+        # data = json.load(file)
+
+    # print(data["version"])
 
     find_me = '大学'
+
+    test.find_by_word(find_me)
+    test.populate_definitions()
+
+    print(test)
 
     # words = data["words"]
     # print(len(words))
@@ -77,13 +119,6 @@ if __name__ == "__main__":
         
     #     if found:
     #         break
-
-    start_time = time.time()
-
-    print(find_by_word(find_me))
-
-    end_time = time.time()
-    print(end_time - start_time)
 
     # for word in words:
 
