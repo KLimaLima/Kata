@@ -17,6 +17,8 @@ class JPN_Dictionary:
 
         # word_dict: the dictionary of the word
         self._word_dict = None
+        self._sense = None
+
         # kanji: the  kanji
         self.kanji = []
         # is the kanji common
@@ -26,7 +28,6 @@ class JPN_Dictionary:
         # applies to which kanji
         # data about its definition
         self.gloss = {}
-        self._sense = None
 
         if self.loaded_dict:
             return
