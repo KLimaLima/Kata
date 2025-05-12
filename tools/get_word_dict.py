@@ -16,17 +16,17 @@ class JPN_Dictionary:
         self.is_kanji: bool
 
         # word_dict: the dictionary of the word
-        self.word_dict = None
+        self._word_dict = None
         # kanji: the  kanji
-        self.kanji = None
+        self.kanji = []
         # is the kanji common
         # kana
-        self.kana = None
+        self.kana = []
         # is the kana common
         # applies to which kanji
         # data about its definition
         self.gloss = {}
-        self.sense = None
+        self._sense = None
 
         if self.loaded_dict:
             return
@@ -64,7 +64,7 @@ class JPN_Dictionary:
 
                 if self.word_to_find == var["text"]:
 
-                    self.word_dict = word
+                    self._word_dict = word
                     self.is_kanji = True
 
                     return True
@@ -73,7 +73,7 @@ class JPN_Dictionary:
 
                 if self.word_to_find == var["text"]:
 
-                    self.word_dict = word
+                    self._word_dict = word
                     self.is_kanji = False
 
                     return True
@@ -82,9 +82,17 @@ class JPN_Dictionary:
     
     def populate_definitions(self):
 
-        self.kanji = self.word_dict["kanji"]
-        self.kana = self.word_dict["kana"]
-        self.sense = self.word_dict["sense"]
+        for var_kanji in self._word_dict["kanji"]:
+
+            if var_kanji["common"]:
+                self.kanji.append(var_kanji["text"])
+
+        for var_kana in self._word_dict["kana"]:
+
+            if var_kana["common"]:
+                self.kana.append(var_kana["text"])
+
+        self._sense = self._word_dict["sense"]
 
         if self.is_kanji:
             applies_to_word = "appliesToKanji"
@@ -93,7 +101,7 @@ class JPN_Dictionary:
 
         gloss_count = 1
 
-        for sense_dict in self.sense:
+        for sense_dict in self._sense:
 
             if self.word_to_find not in sense_dict[applies_to_word] and '*' not in sense_dict[applies_to_word]:
                 continue
@@ -118,11 +126,6 @@ def find_by_id(id):
             return word
     return None
 
-def json2_print(data: dict):
-
-    print(json.dumps(data, indent=4,  ensure_ascii=False))
-
-
 if __name__ == "__main__":
 
     test = JPN_Dictionary("dict/jmdict-eng-3.6.1.json")
@@ -132,17 +135,24 @@ if __name__ == "__main__":
 
     # print(data["version"])
 
-    # find_me = '早い'
-    find_me = '大学'
-    # find_me = 'えんぴつ'
+    # SHOULD WRITE A TEST TO TEST CASES LIKE:
+    # 1 AND 2 for different gloss that applies
+    # 3 AND 4 for taking the kanji since it is written in kanji
+    find_me = '速い' # 1
+    # find_me = '早い' # 2
+    # find_me = '大学' # 3
+    # find_me = 'だいがく' # 4
 
     test.find_by_word(find_me)
     test.populate_definitions()
     print(test)
 
-    for sense in test.sense:
-        print(sense)
-        print()
+    # print(test.word_dict.keys())
+    # print(test)
+
+    # for sense in test.sense:
+    #     print(sense)
+    #     print()
 
     # print(test.sense)
 
