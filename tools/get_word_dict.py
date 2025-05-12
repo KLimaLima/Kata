@@ -6,6 +6,11 @@ import json
 class Jmdict_JPN_Dictionary:
 
     is_dict_loaded = False
+    # TODO: make a method to set a new dict file
+    # maybe can also do a config file
+    # so rather than changing dict file everytime using it,
+    # the code will change the dict file in the config when changing new dict file
+    # and the code will read the dict file from config and set it during init
     dict_file = "dict/jmdict-eng-3.6.1.json"
 
     version = None
@@ -64,6 +69,8 @@ class Jmdict_JPN_Dictionary:
 
         return print_me
     
+    # TODO: prioritise kanji when searching with hiragana
+    # so that it will set is_kanji as true rather than false
     def find_by_word(self, word_to_find):
 
         self.word_to_find = word_to_find
