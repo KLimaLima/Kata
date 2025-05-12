@@ -3,14 +3,15 @@ import json
 # OBJECTIVES
 # 1. Get meaning and definitions for itself only
 # 2. Include other common words
-class JPN_Dictionary:
+class Jmdict_JPN_Dictionary:
 
-    loaded_dict = False
-    
+    is_dict_loaded = False
+    dict_file = "dict/jmdict-eng-3.6.1.json"
+
     version = None
     _words = None
     
-    def __init__(self, dict_file):
+    def __init__(self):
 
         self.word_to_find = None
         self.is_kanji: bool
@@ -29,14 +30,23 @@ class JPN_Dictionary:
         # data about its definition
         self.gloss = {}
 
-        if self.loaded_dict:
+        # If the dict file is loaded already no need to load again
+        if self.is_dict_loaded:
             return
-        # TODO: what if wants to use another dict file
-            
-        with open(dict_file, encoding="utf-8") as file:
-            data = json.load(file)
         
-        self.loaded_dict = True
+        # Try load dict file
+        try:
+            with open(self.dict_file, encoding="utf-8") as file:
+                data = json.load(file)
+
+        except Exception as e:
+            # Failure to load the dict file
+            print("\nError when opening the dictionary file\n", e)
+            return
+        
+        else:
+            # Successfully loaded the dict file
+            self.is_dict_loaded = True
 
         self.version = data["version"]
 
@@ -129,7 +139,7 @@ def find_by_id(id):
 
 if __name__ == "__main__":
 
-    test = JPN_Dictionary("dict/jmdict-eng-3.6.1.json")
+    test = Jmdict_JPN_Dictionary()
 
     # with open("dict/jmdict-eng-3.6.1.json", encoding="utf-8") as file:
         # data = json.load(file)
