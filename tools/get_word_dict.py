@@ -64,7 +64,6 @@ class Jmdict_JPN_Dictionary:
 
         return print_me
     
-    # TODO: it only finds by kanji, need to take situation only kana
     def find_by_word(self, word_to_find):
 
         self.word_to_find = word_to_find
@@ -119,7 +118,6 @@ class Jmdict_JPN_Dictionary:
             
             for gloss_list in sense_dict["gloss"]:
 
-                # self.gloss[gloss_count] = gloss_list["text"]
                 self.gloss.setdefault(gloss_count, []).append(gloss_list["text"])
             gloss_count += 1
 
