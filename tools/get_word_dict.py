@@ -139,10 +139,11 @@ if __name__ == "__main__":
     # SHOULD WRITE A TEST TO TEST CASES LIKE:
     # 1 AND 2 for different gloss that applies
     # 3 AND 4 for taking the kanji since it is written in kanji
-    find_me = '速い' # 1
+    # find_me = '速い' # 1
     # find_me = '早い' # 2
     # find_me = '大学' # 3
     # find_me = 'だいがく' # 4
+    find_me = '交換'
 
     test.find_by_word(find_me)
     test.populate_definitions()
