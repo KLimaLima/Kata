@@ -12,6 +12,9 @@ class JPN_Dictionary:
     
     def __init__(self, dict_file):
 
+        self.word_to_find = None
+        self.is_kanji: bool
+
         # word_dict: the dictionary of the word
         self.word_dict = None
         # kanji: the  kanji
@@ -22,7 +25,7 @@ class JPN_Dictionary:
         # is the kana common
         # applies to which kanji
         # data about its definition
-        self.gloss = None
+        self.gloss = {}
         self.sense = None
 
         if self.loaded_dict:
@@ -49,16 +52,29 @@ class JPN_Dictionary:
             print_me += f'{key}: {value}\n\n'
 
         return print_me
-        
-    def find_by_word(self, find_me):
+    
+    # TODO: it only finds by kanji, need to take situation only kana
+    def find_by_word(self, word_to_find):
+
+        self.word_to_find = word_to_find
 
         for word in self._words:
 
             for var in word["kanji"]:
 
-                if find_me == var["text"]:
+                if self.word_to_find == var["text"]:
 
                     self.word_dict = word
+                    self.is_kanji = True
+
+                    return True
+                
+            for var in word["kana"]:
+
+                if self.word_to_find == var["text"]:
+
+                    self.word_dict = word
+                    self.is_kanji = False
 
                     return True
         
@@ -69,6 +85,25 @@ class JPN_Dictionary:
         self.kanji = self.word_dict["kanji"]
         self.kana = self.word_dict["kana"]
         self.sense = self.word_dict["sense"]
+
+        if self.is_kanji:
+            applies_to_word = "appliesToKanji"
+        else:
+            applies_to_word = "appliesToKana"
+
+        gloss_count = 1
+
+        for sense_dict in self.sense:
+
+            if self.word_to_find not in sense_dict[applies_to_word] and '*' not in sense_dict[applies_to_word]:
+                continue
+            
+            for gloss_list in sense_dict["gloss"]:
+
+                # self.gloss[gloss_count] = gloss_list["text"]
+                self.gloss.setdefault(gloss_count, []).append(gloss_list["text"])
+            gloss_count += 1
+
 
 def find_by_id(id):
 
@@ -97,12 +132,19 @@ if __name__ == "__main__":
 
     # print(data["version"])
 
+    # find_me = '早い'
     find_me = '大学'
+    # find_me = 'えんぴつ'
 
     test.find_by_word(find_me)
     test.populate_definitions()
-
     print(test)
+
+    for sense in test.sense:
+        print(sense)
+        print()
+
+    # print(test.sense)
 
     # words = data["words"]
     # print(len(words))
