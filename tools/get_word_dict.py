@@ -158,7 +158,8 @@ if __name__ == "__main__":
     # find_me = '早い' # 2
     # find_me = '大学' # 3
     # find_me = 'だいがく' # 4
-    find_me = '交換'
+    # find_me = '交換'
+    find_me = 'な'
 
     test.find_by_word(find_me)
     test.populate_definitions()
