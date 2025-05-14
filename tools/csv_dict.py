@@ -7,7 +7,7 @@ class csv_dict:
 
     def __init__(self):
 
-        self.found = []
+        self.found_dict = None
 
         with open(self._csv_file, 'r', encoding='utf-8') as csv_file:
 
@@ -19,24 +19,30 @@ class csv_dict:
     
     def __str__(self):
 
-        for row in self._jpn_dict:
-            print(row)
+        # for row in self._jpn_dict:
+        #     print(row)
 
-        return '\n'
+        # return '\n'
+
+        return str(self.found_dict)
     
     def find_by_word(self, find_me):
 
         for row in self._jpn_dict:
 
             if row['見出し'] == find_me:
-                pass
 
+                self.found_dict = row
 
+                return True
+        return False
 
 if __name__ == "__main__":
 
-    my_str = '大学'
+    my_str = '忘れる'
 
     test = csv_dict()
+
+    test.find_by_word(my_str)
 
     print(test)
